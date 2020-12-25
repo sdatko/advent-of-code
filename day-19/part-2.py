@@ -23,37 +23,59 @@
 INPUT_FILE = 'input.txt'
 
 
-def match(message, rules_set, rule):
-    success = False
-
-    if '|' in rule:
-        for multi_rule in rule.split(' | '):
-            success, message1 = match(message, rules_set, multi_rule)
-            if success:
-                return True, message1
+def inner_match(message, rules_set, rule):
+    if not message:
         return False, message
 
+    if rule.startswith('"') and rule.endswith('"') and " " not in rule:
+        text = rule[1:-1]
+        if message.startswith(text):
+            return True, message[len(text):]
+        else:
+            return False, message
+
+    elif rule.isnumeric():
+        rule = rules_set[rule]
+        return inner_match(message, rules_set, rule)
+
+    elif ' | ' in rule:
+        results = []
+        lengths = []
+        remainings = []
+
+        for subrule in rule.split(' | '):
+            success, remaining = inner_match(message, rules_set, subrule)
+            results.append(success)
+            lengths.append(len(remaining))
+            remainings.append(remaining)
+
+        if any(results):
+            remaining = min(
+                filter(
+                    lambda element: element[0] is True,
+                    zip(results, lengths, remainings)
+                ),
+                key=lambda element: element[1]
+            )[2]
+            return True, remaining
+        else:
+            return False, message
+
     elif ' ' in rule:
-        for i, subrule in enumerate(rule.split()):
-            success, message = match(message, rules_set, subrule)
-            if success and not message and i != len(rule.split()) - 1:
-                return False, message
+        for subrule in rule.split():
+            success, message = inner_match(message, rules_set, subrule)
             if not success:
-                return False, message
-        if success:
-            return True, message
-        else:
-            return False, message
+                break
+        return success, message
 
+
+def match(message, rules_set, rule):
+    success, remaining = inner_match(message, rules_set, rule)
+
+    if success and not remaining:
+        return True, remaining
     else:
-        if rule.isnumeric():
-            rule = rules_set[rule]
-            return match(message, rules_set, rule)
-        else:
-            if message and message.startswith(rule):
-                return True, message[len(rule):]
-            return False, message
-
+        return False, remaining
 
 
 def main():
@@ -67,7 +89,7 @@ def main():
     matched = 0
     for message in messages:
         success, remaining = match(message, rules, '0')
-        if success and not remaining:
+        if success:
             matched += 1
 
     print(matched)

@@ -33,36 +33,43 @@
 INPUT_FILE = 'input.txt'
 
 
-def match(message, rules_set, rule):
-    success = False
+def inner_match(message, rules_set, rule):
+    if not message:
+        return False, message
 
-    if '|' in rule:
-        rules = rule.split(' | ')
-        success, message1 = match(message, rules_set, rules[0])
-        if success:
-            message = message1
+    if rule.startswith('"') and rule.endswith('"') and " " not in rule:
+        text = rule[1:-1]
+        if message.startswith(text):
+            return True, message[len(text):]
         else:
-            success, message2 = match(message, rules_set, rules[1])
+            return False, message
+
+    elif rule.isnumeric():
+        rule = rules_set[rule]
+        return inner_match(message, rules_set, rule)
+
+    elif ' | ' in rule:
+        for subrule in rule.split(' | '):
+            success, remaining = inner_match(message, rules_set, subrule)
             if success:
-                message = message2
+                return True, remaining
+        return False, message
 
     elif ' ' in rule:
         for subrule in rule.split():
-            success, message = match(message, rules_set, subrule)
+            success, message = inner_match(message, rules_set, subrule)
             if not success:
                 break
+        return success, message
 
+
+def match(message, rules_set, rule):
+    success, remaining = inner_match(message, rules_set, rule)
+
+    if success and not remaining:
+        return True, remaining
     else:
-        if rule.isnumeric():
-            rule = rules_set[rule]
-            success, message = match(message, rules_set, rule)
-        else:  # string like "a"
-            character = rule[1]
-            if message and message[0] == character:
-                message = message[1:]
-                success = True
-
-    return success, message
+        return False, remaining
 
 
 def main():
@@ -74,7 +81,7 @@ def main():
     matched = 0
     for message in messages:
         success, remaining = match(message, rules, '0')
-        if success and not remaining:
+        if success:
             matched += 1
 
     print(matched)
