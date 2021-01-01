@@ -23,76 +23,115 @@
 INPUT_FILE = 'input.txt'
 
 
-def inner_match(message, rules_set, rule):
-    if not message:
-        return False, message
+def inner_match(messages, rules_set, rule):
+    if not messages:
+        return False, messages
 
     if rule.startswith('"') and rule.endswith('"') and " " not in rule:
         text = rule[1:-1]
-        if message.startswith(text):
-            return True, message[len(text):]
+        remainings = []
+
+        for message in messages:
+            if message.startswith(text):
+                remainings.append(message[len(text):])
+
+        if remainings:
+            return True, remainings
         else:
-            return False, message
+            return False, messages
 
     elif rule.isnumeric():
         rule = rules_set[rule]
-        return inner_match(message, rules_set, rule)
+        return inner_match(messages, rules_set, rule)
 
     elif ' | ' in rule:
-        results = []
-        lengths = []
         remainings = []
 
         for subrule in rule.split(' | '):
-            success, remaining = inner_match(message, rules_set, subrule)
-            results.append(success)
-            lengths.append(len(remaining))
-            remainings.append(remaining)
+            success, remaining = inner_match(messages, rules_set, subrule)
+            if success:
+                remainings.extend(remaining if isinstance(remaining, list)
+                                  else [remaining])
 
-        if any(results):
-            remaining = min(
-                filter(
-                    lambda element: element[0] is True,
-                    zip(results, lengths, remainings)
-                ),
-                key=lambda element: element[1]
-            )[2]
-            return True, remaining
+        if remainings:
+            return True, remainings
         else:
-            return False, message
+            return False, messages
 
     elif ' ' in rule:
+        remainings = messages
         for subrule in rule.split():
-            success, message = inner_match(message, rules_set, subrule)
+            success, remainings = inner_match(remainings, rules_set, subrule)
             if not success:
                 break
-        return success, message
+        return success, remainings
 
 
 def match(message, rules_set, rule):
-    success, remaining = inner_match(message, rules_set, rule)
+    success, remainings = inner_match([message], rules_set, rule)
 
-    if success and not remaining:
-        return True, remaining
+    if success and not all(remainings):
+        return True, ""
     else:
-        return False, remaining
+        return False, remainings
+
+
+def test(message, rules, rule):
+    success, remaining = match(message, rules, rule)
+    print('Message:   ', message)
+    print('Rule:      ', rule)
+    print('Remaining: ', remaining)
+    print('Status:    ', success)
+    print()
+    return success, remaining
 
 
 def main():
-    data = open(INPUT_FILE, 'r').read().split('\n\n')
-    messages = [line for line in data[1].strip('\n').split('\n')]
+    data = """0: 4 1 | 4 1
+1: 5
+4: "a"
+5: "b"
+
+""".split('\n\n')
     rules = dict([line.split(': ')
                   for line in data[0].strip('\n').split('\n')])
-    rules['8'] = '42 | 42 8'
-    rules['11'] = '42 31 | 42 11 31'
+    rules['1'] = '5 | 5 1'
 
-    matched = 0
-    for message in messages:
-        success, remaining = match(message, rules, '0')
-        if success:
-            matched += 1
+    assert test('a', rules, '4') == (True, '')
+    assert test('b', rules, '4') == (False, ['b'])
+    assert test('a', rules, '5') == (False, ['a'])
+    assert test('b', rules, '5') == (True, '')
 
-    print(matched)
+    assert test('aa', rules, '4') == (False, ['a'])
+    assert test('bb', rules, '4') == (False, ['bb'])
+
+    assert test('a', rules, '1') == (False, ['a'])
+    assert test('b', rules, '1') == (True, '')
+    assert test('bb', rules, '1') == (True, '')
+    assert test('bbb', rules, '1') == (True, '')
+    assert test('b', rules, '1 1') == (False, [''])
+
+    assert test('ab', rules, '4 5') == (True, '')
+    assert test('abb', rules, '4 5 5') == (True, '')
+    assert test('aab', rules, '4 5 5') == (False, ['ab'])
+
+    assert test('ab', rules, '4 1') == (True, '')
+    assert test('abb', rules, '4 1') == (True, '')
+    assert test('abb', rules, '4 1 1') == (True, '')
+    assert test('abbb', rules, '4 1 1') == (True, '')
+    assert test('aab', rules, '4 1 1') == (False, ['ab'])
+
+    assert test('ba', rules, '4 5') == (False, ['ba'])
+    assert test('ba', rules, '5 4') == (True, '')
+    assert test('ba', rules, '4 5 | 5 4') == (True, '')
+    assert test('ba', rules, '4 1') == (False, ['ba'])
+    assert test('ba', rules, '1 4') == (True, '')
+    assert test('ba', rules, '4 1 | 1 4') == (True, '')
+
+    assert test('abbb', rules, '4 5') == (False, ['bb'])
+    assert test('ab', rules, '4 1') == (True, '')
+    assert test('abb', rules, '4 1') == (True, '')
+    assert test('abbb', rules, '4 1') == (True, '')
 
 
 if __name__ == '__main__':
