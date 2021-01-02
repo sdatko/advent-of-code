@@ -28,6 +28,28 @@
 # How many messages completely match rule 0?
 #
 # Solution:
+# We start by reading the input file that is divided in two parts – the rules
+# and messages to verify, separated by two newlines. The messages are strings,
+# each in separate line, so we just build a list to check later. The rules
+# are also defined as one per line, but each consists of name and its body,
+# separated by colon, so we build a dictionary using names as keys.
+# The we process each message and test whether it matches the given rule.
+# For this, we take the rule and analyze it:
+# – if this is a string rule (contains quotation marks), we attempt to remove
+#   the given string from the beginning of remaining message and we report
+#   whether that was successful or not,
+# – if this is a numeric rule (contains a reference), we load the given rule
+#   and launch the nested matching using the new rule,
+# – if this is a branched rule (contains a pipe – alternative), we split
+#   the rule to a number of sub-rules and then we launch nested matching
+#   with each sub-rule until there is a first successful match, otherwise
+#   we report failure and return the original message,
+# – if this is a multi rule (contains a space – conjunction), we perform
+#   the nested matching of remaining message with each part of the given
+#   rule set (one by one), as long as it is successful, then finally we return
+#   the last status and remaining message.
+# The whole matching is only successful when there is no unmatched remaining
+# returned from the process.
 #
 
 INPUT_FILE = 'input.txt'

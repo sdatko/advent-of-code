@@ -18,6 +18,16 @@
 # After updating rules 8 and 11, how many messages completely match rule 0?
 #
 # Solution:
+# The complication here is that now for the branched rules (alternatives)
+# we cannot just stop after finding first match with its sub-rules. Contrary,
+# we need to check all the possibilities and preserve their results as well.
+# The important discovery for me here was that we need to proceed then with
+# a list of all possible remainings, instead of just picking up the longest
+# match – there are cases, when this approach leads to failures (refer to
+# commit message f93474e3 for details).
+# After realizing that, the remaining implementation was quite straightforward.
+# So, the whole matching is successful, when there exist at least one remaining
+# of length 0 (contains no unmatched letters left).
 #
 
 INPUT_FILE = 'input.txt'
@@ -76,62 +86,21 @@ def match(message, rules_set, rule):
         return False, remainings
 
 
-def test(message, rules, rule):
-    success, remaining = match(message, rules, rule)
-    print('Message:   ', message)
-    print('Rule:      ', rule)
-    print('Remaining: ', remaining)
-    print('Status:    ', success)
-    print()
-    return success, remaining
-
-
 def main():
-    data = """0: 4 1 | 4 1
-1: 5
-4: "a"
-5: "b"
-
-""".split('\n\n')
+    data = open(INPUT_FILE, 'r').read().split('\n\n')
+    messages = [line for line in data[1].strip('\n').split('\n')]
     rules = dict([line.split(': ')
                   for line in data[0].strip('\n').split('\n')])
-    rules['1'] = '5 | 5 1'
+    rules['8'] = '42 | 42 8'
+    rules['11'] = '42 31 | 42 11 31'
 
-    assert test('a', rules, '4') == (True, '')
-    assert test('b', rules, '4') == (False, ['b'])
-    assert test('a', rules, '5') == (False, ['a'])
-    assert test('b', rules, '5') == (True, '')
+    matched = 0
+    for message in messages:
+        success, remaining = match(message, rules, '0')
+        if success:
+            matched += 1
 
-    assert test('aa', rules, '4') == (False, ['a'])
-    assert test('bb', rules, '4') == (False, ['bb'])
-
-    assert test('a', rules, '1') == (False, ['a'])
-    assert test('b', rules, '1') == (True, '')
-    assert test('bb', rules, '1') == (True, '')
-    assert test('bbb', rules, '1') == (True, '')
-    assert test('b', rules, '1 1') == (False, [''])
-
-    assert test('ab', rules, '4 5') == (True, '')
-    assert test('abb', rules, '4 5 5') == (True, '')
-    assert test('aab', rules, '4 5 5') == (False, ['ab'])
-
-    assert test('ab', rules, '4 1') == (True, '')
-    assert test('abb', rules, '4 1') == (True, '')
-    assert test('abb', rules, '4 1 1') == (True, '')
-    assert test('abbb', rules, '4 1 1') == (True, '')
-    assert test('aab', rules, '4 1 1') == (False, ['ab'])
-
-    assert test('ba', rules, '4 5') == (False, ['ba'])
-    assert test('ba', rules, '5 4') == (True, '')
-    assert test('ba', rules, '4 5 | 5 4') == (True, '')
-    assert test('ba', rules, '4 1') == (False, ['ba'])
-    assert test('ba', rules, '1 4') == (True, '')
-    assert test('ba', rules, '4 1 | 1 4') == (True, '')
-
-    assert test('abbb', rules, '4 5') == (False, ['bb'])
-    assert test('ab', rules, '4 1') == (True, '')
-    assert test('abb', rules, '4 1') == (True, '')
-    assert test('abbb', rules, '4 1') == (True, '')
+    print(matched)
 
 
 if __name__ == '__main__':
