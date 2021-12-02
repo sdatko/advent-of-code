@@ -28,12 +28,14 @@ def main():
     depths = [int(depth) for depth in open(INPUT_FILE, 'r')]
 
     increases = 0
-    previous = depths.pop(0)
 
-    for depth in depths:
-        if depth > previous:
-            increases += 1
-        previous = depth
+    if depths:
+        previous = depths.pop(0)
+
+        for depth in depths:
+            if depth > previous:
+                increases += 1
+            previous = depth
 
     print(increases)
 
