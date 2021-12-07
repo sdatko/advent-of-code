@@ -24,6 +24,25 @@
 # and I am not sure it will work for all cases, so I am leaving the original
 # approach that gave me the result.
 #
+# Appendix:
+# The proof for average exists, although it is more complicated this time.
+# We start with function f(X) = \sum_{i=0}^N g( abs(S_i - X) ), here additional
+# g(n) = n * (n+1) / 2. Calculating the derivative, it gives us as follows:
+# f'(X) = \sum_{i=0}^N ( 1/2 + abs(S_i - X) ) * sign(S_i - X),
+# as for h(x) = g(f(x)) we have h'(x) = g'(f(x)) * f'(x). Then f'(X) can be
+# rewritten to the following form of two separate sums:
+# f'(X) = \sum_{i=0}^N sign(S_i - X) / 2 + \sum_{i=0}^N S_i - X,
+# Here the \sum_{i=0}^N S_i - X can be written as SUM - N * X, where SUM equals
+# to the sum of elements from set S and N is a number of these elements in S.
+# Therefore we have:
+# f'(X) = \sum_{i=0}^N sign(S_i - X) / 2 + SUM - N * X,
+# Solving it for f'(X) = 0, we obtain:
+# X = SUM / N + \sum_{i=0}^N sign(S_i - X) / 2N
+# Here, the SUM / N is an average value of set S. The second term describes
+# the boundaries for solution around the average – as sum of N values of sign()
+# function lies between -N and N, the boundary limits to [-0.5; 0.5].
+# In our puzzle, we need to examine two points around the average value.
+#
 
 INPUT_FILE = 'input.txt'
 

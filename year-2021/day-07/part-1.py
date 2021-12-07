@@ -34,6 +34,17 @@
 # around median of initial positions (sorted(positions)[len(positions) // 2]),
 # however I cannot justify than and I am not sure it works for all cases.
 #
+# Appendix:
+# pbielak sent me a proof, so median indeed should work in all cases.
+# For a given set S, we are looking for a value X that brings the value of
+# function \sum_{i=0}^N abs(S_i - X); to its minimum (ideally – zero).
+# So we take the derivative, which in this case can be represented as:
+# f'(X) = \sum_{i=0}^N sign(S_i - X).
+# The latter sum equals to zero only if there is the same number of -1 and 1.
+# Hence, the value X must be exactly in the middle of our set S.
+# Such number is called a median.
+# When there is even number of elements, we have 2 solutions in our puzzle.
+#
 
 INPUT_FILE = 'input.txt'
 
