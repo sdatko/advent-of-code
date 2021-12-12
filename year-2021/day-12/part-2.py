@@ -50,7 +50,7 @@ def main():
     possible_paths = 0
 
     while paths:
-        path = paths.pop(0)
+        path = paths.pop()
         last_cave = path[-1]
 
         for next_cave in connections[last_cave]:
