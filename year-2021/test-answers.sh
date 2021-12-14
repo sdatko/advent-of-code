@@ -30,6 +30,13 @@ EXPECTED_ANSWERS=(
     418
     4659
     148962
+    745
+    ' ##  ###  #  #   ## #### ###   ##   ## 
+#  # #  # # #     # #    #  # #  # #  #
+#  # ###  ##      # ###  ###  #    #   
+#### #  # # #     # #    #  # # ## #   
+#  # #  # # #  #  # #    #  # #  # #  #
+#  # ###  #  #  ##  #    ###   ###  ## '
 )
 
 
@@ -57,6 +64,7 @@ for DIRECTORY in "${WORK_DIR}/day-"*; do
     if [ -f 'part-2.py' ]; then
         EXPECTED_ANSWER=$1
         ACTUAL_ANSWER=$(python3 part-2.py)
+
         if [ "${ACTUAL_ANSWER}" != "${EXPECTED_ANSWER}" ]; then
             exit 1
         fi

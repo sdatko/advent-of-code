@@ -1,0 +1,80 @@
+#!/usr/bin/env python3
+#
+# Task:
+# You reach another volcanically active part of the cave. It would be nice
+# if you could do some kind of thermal imaging so you could tell ahead of time
+# which caves are too hot to safely enter.
+# Fortunately, the submarine seems to be equipped with a thermal camera!
+# When you activate it, you are greeted with:
+#   Congratulations on your purchase! To activate this infrared thermal imaging
+#   camera system, please enter the code found on page 1 of the manual.
+# Apparently, the Elves have never used this feature. To your surprise, you
+# manage to find the manual; as you go to open it, page 1 falls out. It's a
+# large sheet of transparent paper! The transparent paper is marked with random
+# dots and includes instructions on how to fold it up (your puzzle input).
+# The first section is a list of dots on the transparent paper. 0,0 represents
+# the top-left coordinate. The first value, x, increases to the right.
+# The second value, y, increases downward. So, the coordinate 3,0 is to the
+# right of 0,0, and the coordinate 0,7 is below 0,0. The coordinates in this
+# example form the following pattern, where # is a dot on the paper and . is
+# an empty, unmarked position.
+# Then, there is a list of fold instructions. Each instruction indicates a line
+# on the transparent paper and wants you to fold the paper up (for horizontal
+# y=... lines) or left (for vertical x=... lines).
+# Some of the dots might end up overlapping after the fold is complete,
+# but dots will never appear exactly on a fold line.
+# Also some dots can end up overlapping; in this case, the dots merge together
+# and become a single dot.
+# How many dots are visible after completing just the first fold instruction
+# on your transparent paper?
+
+#
+# Solution:
+# First we read the puzzle input and split it by empty line (double \n).
+# The first part is a list of positions (x, y) where marked characters
+# are drawn. The second part is a list of foldings that should be done,
+# stored as axis identifier ('x' or 'y') and the position on that axis.
+# Then we take the first element of foldings list and attempt do perform
+# the folding algorithm on a given axis and position.
+# It can be noticed that for folding, we will only move points that are
+# on the right or below the line of folding – so we can skip any elements
+# which value of x or y (correspondingly) lower that the position of fold.
+# For the remaining points, we shall notice that the folding operation
+# will only alter the value of position related to the axis we consider,
+# so for folding on x axis only values of x (greater that position) will
+# be changed. And the change is as follows: we need to move the point
+# from a given position of folding (axis) by the current distance of point
+# to axis (point - axis), so it equals to (axis - (point - axis)), which
+# equals to 2*axis_position - point_position.
+#
+
+INPUT_FILE = 'input.txt'
+
+
+def main():
+    with open(INPUT_FILE, 'r') as file:
+        puzzle_input = file.read().split('\n\n')
+
+    positions = [tuple(map(int, line.strip().split(',')))
+                 for line in puzzle_input[0].splitlines()]
+    foldings = [tuple(line.strip().replace('fold along ', '').split('='))
+                for line in puzzle_input[1].splitlines()]
+    foldings = [(axis, int(value)) for (axis, value) in foldings]
+
+    (axis, value) = foldings[0]
+
+    for index, (x, y) in enumerate(positions):
+        if axis == 'x':
+            if x < value:
+                continue
+            positions[index] = (2*value - x, y)
+        if axis == 'y':
+            if y < value:
+                continue
+            positions[index] = (x, 2*value - y)
+
+    print(len(set(positions)))
+
+
+if __name__ == '__main__':
+    main()
