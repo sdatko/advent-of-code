@@ -14,19 +14,14 @@
 # The only change in this part is related to the definition of forbidden
 # locations. We add additional check – if the next cave is our starting point,
 # we skip that path. Then we modify the case for small caves (i.e. with names
-# written using lowercase letters) – now if the next cave was already visited
-# two times, or it was visited once but there was already any small cave
-# visited twice, we skip it.
+# written using lowercase letters) – now if the next cave was not visited yet
+# we produce new path for it, otherwise we only use it as part of new path
+# only if there was no cave visited second time so far (for this, we introduce
+# additional variable that stores the information about that). In case of
+# big caves we add them always to the path.
 #
 
 INPUT_FILE = 'input.txt'
-
-
-def visited_small_cave_twice(path: list) -> bool:
-    for cave in path:
-        if cave.islower() and path.count(cave) >= 2:
-            return True
-    return False
 
 
 def main():
@@ -46,11 +41,11 @@ def main():
         connections[end].add(start)
 
     goal = 'end'
-    paths = [['start']]
+    paths = [(['start'], False)]
     possible_paths = 0
 
     while paths:
-        path = paths.pop()
+        path, anything_visited_twice = paths.pop()
         last_cave = path[-1]
 
         for next_cave in connections[last_cave]:
@@ -62,14 +57,17 @@ def main():
                 continue
 
             if next_cave.islower():
-                if path.count(next_cave) >= 2:
-                    continue
+                if next_cave not in path:
+                    new_path = (path + [next_cave], anything_visited_twice)
+                    paths.append(new_path)
 
-                if path.count(next_cave) and visited_small_cave_twice(path):
-                    continue
+                elif not anything_visited_twice:
+                    new_path = (path + [next_cave], True)
+                    paths.append(new_path)
 
-            new_path = path + [next_cave]
-            paths.append(new_path)
+            else:
+                new_path = (path + [next_cave], anything_visited_twice)
+                paths.append(new_path)
 
     print(possible_paths)
 
