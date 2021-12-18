@@ -96,7 +96,7 @@
 # Here:
 #   delta = 1² - 4 * (-2) * x_min
 # And so the solution is:
-#   Vx = -1 ± sqrt(delta) / 2
+#   Vx = (-1 ± sqrt(delta)) / 2
 # We are only interested in positive value here, so we take only one with +
 # instead of ± in this formula, and then the ceil, as we are considering only
 # discrete space here.
@@ -143,10 +143,10 @@ def main():
 
     x_min = min(x_range) - starting_point[0]
     x_max = max(x_range) - starting_point[0]
-    y_min = min(y_range) - starting_point[0]
-    y_max = max(y_range) - starting_point[0]
+    y_min = min(y_range) - starting_point[1]
+    y_max = max(y_range) - starting_point[1]
 
-    Vx_min = int(ceil(-1 + (1 + 8 * x_min)**0.5 / 2))
+    Vx_min = int(ceil(-0.5 + (1 + 8 * x_min)**0.5 / 2))
     Vx_max = x_max
     Vy_min = y_min
     Vy_max = -y_min - 1

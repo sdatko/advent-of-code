@@ -50,10 +50,10 @@ def main():
 
     x_min = min(x_range) - starting_point[0]
     x_max = max(x_range) - starting_point[0]
-    y_min = min(y_range) - starting_point[0]
-    y_max = max(y_range) - starting_point[0]
+    y_min = min(y_range) - starting_point[1]
+    y_max = max(y_range) - starting_point[1]
 
-    Vx_min = int(ceil(-1 + (1 + 8 * x_min)**0.5 / 2))
+    Vx_min = int(ceil(-0.5 + (1 + 8 * x_min)**0.5 / 2))
     Vx_max = x_max
     Vy_min = y_min
     Vy_max = -y_min - 1
