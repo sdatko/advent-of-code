@@ -47,7 +47,7 @@ def game(possibilities, positions, scores, turn=0):
         return CACHE[uuid]
 
     player = PLAYER_1 if turn % 2 == 0 else PLAYER_2
-    turn += 1
+    turn = (turn + 1) % 2
     wins = [0, 0]
 
     for roll, times in possibilities.items():
