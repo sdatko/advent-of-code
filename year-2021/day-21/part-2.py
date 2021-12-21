@@ -38,8 +38,14 @@ GOAL = 21
 PLAYER_1 = 0
 PLAYER_2 = 1
 
+CACHE = {}
+
 
 def game(possibilities, positions, scores, turn=0):
+    uuid = ((tuple(positions), tuple(scores), turn))
+    if uuid in CACHE:
+        return CACHE[uuid]
+
     player = PLAYER_1 if turn % 2 == 0 else PLAYER_2
     turn += 1
     wins = [0, 0]
@@ -63,6 +69,7 @@ def game(possibilities, positions, scores, turn=0):
             else:
                 wins[PLAYER_2] += times
 
+    CACHE[uuid] = wins
     return wins
 
 
