@@ -371,11 +371,8 @@ def find_all_moves_from_corridor(states, cost, corridor, rooms):
         index1 = min(indexes)
         index2 = max(indexes)
 
-        # exclude the current position from range
-        if index1 == position:
-            index1 += 1
-        else:
-            index2 -= 1
+        # exclude the first position from range as it is never relevant
+        index1 += 1
 
         if any(corridor[index1:index2]):
             continue  # intermediate position occupied, cannot move
