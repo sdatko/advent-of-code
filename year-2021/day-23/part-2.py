@@ -475,7 +475,7 @@ def main():
         cost, state = heap_pop(states)
         corridor, rooms = state
 
-        state_hash = tuplify(state)
+        state_hash = hash(tuplify(state))
         if state_hash in states_seen:
             continue
         states_seen.add(state_hash)
