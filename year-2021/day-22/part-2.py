@@ -103,6 +103,19 @@
 # to 3 areas, depending on min_i and max_i values. For a 3-dimensional object
 # (cuboid) we have then up to 27 new shapes to consider.
 # [1] https://www.youtube.com/watch?v=cUzklzVXJwo – time 8:36
+# Edit: later I noticed that in our problem, we do not have to consider all
+# 27 new shapes – as we are interested in just removing the overlapping common
+# volume, so it is sufficient to cut the whole cuboid to just 7 shapes and
+# discard one middle element. In this idea, we perform cuts along both common1
+# and common2 values on a given axis, next we keep everything on "the left" of
+# common1 and on "the right" of common2, then we cut the remaining middle part
+# along the other axis and repeat the procedure for all axes. In other words,
+# some of the originally produced 27 shapes can be rearranged and combined
+# together to get bigger ones – such as 9 shapes that have common x_lower bound
+# can be joined as 1 cuboid, similarly the 9 shapes with common x_upper bound
+# produce another 1 cuboid, then remaining 3 shapes with common y_lower bound
+# can produce 1 cuboid and 3 shapes with common y_upper bound creates another
+# 1 cuboid, leaving finally 3 cuboids of which just one is to discard.
 #
 
 INPUT_FILE = 'input.txt'
@@ -133,96 +146,26 @@ def subdivide_second_cuboid(cuboid1, cuboid2):
 
     result = []
 
+    # slices on x-axis to keep
     if x2_max > nx_max:
-        x_upper = (nx_max + 1, x2_max)
-    else:
-        x_upper = None
-
+        result.append((nx_max + 1, x2_max, y2_min, y2_max, z2_min, z2_max))
     if x2_min < nx_min:
-        x_lower = (x2_min, nx_min - 1)
-    else:
-        x_lower = None
+        result.append((x2_min, nx_min - 1, y2_min, y2_max, z2_min, z2_max))
 
+    # slices on y-axis to keep of what remains
     if y2_max > ny_max:
-        y_upper = (ny_max + 1, y2_max)
-    else:
-        y_upper = None
-
+        result.append((nx_min, nx_max, ny_max + 1, y2_max, z2_min, z2_max))
     if y2_min < ny_min:
-        y_lower = (y2_min, ny_min - 1)
-    else:
-        y_lower = None
+        result.append((nx_min, nx_max, y2_min, ny_min - 1, z2_min, z2_max))
 
+    # slices on z-axis to keep of what remains
     if z2_max > nz_max:
-        z_upper = (nz_max + 1, z2_max)
-    else:
-        z_upper = None
-
+        result.append((nx_min, nx_max, ny_min, ny_max, nz_max + 1, z2_max))
     if z2_min < nz_min:
-        z_lower = (z2_min, nz_min - 1)
-    else:
-        z_lower = None
+        result.append((nx_min, nx_max, ny_min, ny_max, z2_min, nz_min - 1))
 
     # 1 common cuboid that we want to drop
     # result.append((nx_min, nx_max, ny_min, ny_max, nz_min, nz_max))
-
-    # 6 cuboids that spreads along 1-axis
-    if x_upper:
-        result.append((*x_upper, ny_min, ny_max, nz_min, nz_max))
-    if x_lower:
-        result.append((*x_lower, ny_min, ny_max, nz_min, nz_max))
-    if y_upper:
-        result.append((nx_min, nx_max, *y_upper, nz_min, nz_max))
-    if y_lower:
-        result.append((nx_min, nx_max, *y_lower, nz_min, nz_max))
-    if z_upper:
-        result.append((nx_min, nx_max, ny_min, ny_max, *z_upper))
-    if z_lower:
-        result.append((nx_min, nx_max, ny_min, ny_max, *z_lower))
-
-    # 12 cuboids that spreads along 2-axes
-    if x_upper and y_upper:
-        result.append((*x_upper, *y_upper, nz_min, nz_max))
-    if x_upper and y_lower:
-        result.append((*x_upper, *y_lower, nz_min, nz_max))
-    if x_lower and y_upper:
-        result.append((*x_lower, *y_upper, nz_min, nz_max))
-    if x_lower and y_lower:
-        result.append((*x_lower, *y_lower, nz_min, nz_max))
-    if y_upper and z_upper:
-        result.append((nx_min, nx_max, *y_upper, *z_upper))
-    if y_upper and z_lower:
-        result.append((nx_min, nx_max, *y_upper, *z_lower))
-    if y_lower and z_upper:
-        result.append((nx_min, nx_max, *y_lower, *z_upper))
-    if y_lower and z_lower:
-        result.append((nx_min, nx_max, *y_lower, *z_lower))
-    if x_upper and z_upper:
-        result.append((*x_upper, ny_min, ny_max, *z_upper))
-    if x_upper and z_lower:
-        result.append((*x_upper, ny_min, ny_max, *z_lower))
-    if x_lower and z_upper:
-        result.append((*x_lower, ny_min, ny_max, *z_upper))
-    if x_lower and z_lower:
-        result.append((*x_lower, ny_min, ny_max, *z_lower))
-
-    # 8 cuboids that spreads along 3-axes
-    if x_upper and y_upper and z_upper:
-        result.append((*x_upper, *y_upper, *z_upper))
-    if x_upper and y_upper and z_lower:
-        result.append((*x_upper, *y_upper, *z_lower))
-    if x_upper and y_lower and z_upper:
-        result.append((*x_upper, *y_lower, *z_upper))
-    if x_upper and y_lower and z_lower:
-        result.append((*x_upper, *y_lower, *z_lower))
-    if x_lower and y_upper and z_upper:
-        result.append((*x_lower, *y_upper, *z_upper))
-    if x_lower and y_upper and z_lower:
-        result.append((*x_lower, *y_upper, *z_lower))
-    if x_lower and y_lower and z_upper:
-        result.append((*x_lower, *y_lower, *z_upper))
-    if x_lower and y_lower and z_lower:
-        result.append((*x_lower, *y_lower, *z_lower))
 
     return result
 
