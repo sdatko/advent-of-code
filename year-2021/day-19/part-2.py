@@ -1,14 +1,19 @@
 #!/usr/bin/env python3
 #
-# Task:
+# --- Day 19: Beacon Scanner / Part Two ---
+#
 # Sometimes, it's a good idea to appreciate just how big the ocean is.
 # Using the Manhattan distance, how far apart do the scanners get?
+#
 # In the above example, scanners 2 (1105,-1205,1229) and 3 (-92,-2380,-20)
 # are the largest Manhattan distance apart. In total, they are 1197 + 1175
 # + 1249 = 3621 units apart.
+#
 # What is the largest Manhattan distance between any two scanners?
 #
-# Solution:
+#
+# --- Solution ---
+#
 # To find the scanners positions, relative to our chosen origin point, after
 # we found the proper rotation and translation vector, we just need to sum
 # the coordinates of the beacon from the known set we used and the inverse of

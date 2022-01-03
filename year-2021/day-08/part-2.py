@@ -1,10 +1,12 @@
 #!/usr/bin/env python3
 #
-# Task:
+# --- Day 8: Seven Segment Search / Part Two ---
+#
 # Through a little deduction, you should now be able to determine the remaining
 # digits. Consider again the first example above:
 #   acedgfb cdfbe gcdfa fbcad dab cefabd cdfgeb eafb cagedb ab
 #   | cdfeb fcadb cdfeb cdbaf
+#
 # After some careful analysis, the mapping between signal wires and segments
 # only make sense in the following configuration:
 #    dddd
@@ -14,6 +16,7 @@
 #   g    b
 #   g    b
 #    cccc
+#
 # So, the unique signal patterns would correspond to the following digits:
 #   acedgfb: 8
 #   cdfbe: 5
@@ -25,17 +28,22 @@
 #   eafb: 4
 #   cagedb: 0
 #   ab: 1
+#
 # Then, the four digits of the output value can be decoded:
 #   cdfeb: 5
 #   fcadb: 3
 #   cdfeb: 5
 #   cdbaf: 3
+#
 # Therefore, the output value for this entry is 5353.
+#
 # For each entry, determine all of the wire/segment connections and decode
 # the four-digit output values. What do you get if you add up all of the
 # output values?
 #
-# Solution:
+#
+# --- Solution ---
+#
 # This part requires us to find a mapping between signals and the digits these
 # signals represent. The problem is that in each entry, the signal parts
 # (letters `a`, `b`, etc.) correspond to a different part of display.

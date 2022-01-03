@@ -1,8 +1,10 @@
 #!/usr/bin/env python3
 #
-# Task:
+# --- Day 16: Packet Decoder / Part Two ---
+#
 # Now that you have the structure of your transmission decoded, you can
 # calculate the value of the expression it represents.
+#
 # Literal values (type ID 4) represent a single number as described above.
 # The remaining type IDs are more interesting:
 # - Packets with type ID 0 are sum packets - their value is the sum of
@@ -27,8 +29,10 @@
 #   if the value of the first sub-packet is equal to the value of
 #   the second sub-packet; otherwise, their value is 0. These packets
 #   always have exactly two sub-packets.
+#
 # Using these rules, you can now work out the value of the outermost packet
 # in your BITS transmission.
+#
 # For example:
 # - C200B40A82 finds the sum of 1 and 2, resulting in the value 3.
 # - 04005AC33890 finds the product of 6 and 9, resulting in the value 54.
@@ -38,10 +42,13 @@
 # - F600BC2D8F produces 0, because 5 is not greater than 15.
 # - 9C005AC2F8F0 produces 0, because 5 is not equal to 15.
 # - 9C0141080250320F1802104A08 produces 1, because 1 + 3 = 2 * 2.
+#
 # What do you get if you evaluate the expression represented by your
 # hexadecimal-encoded BITS transmission?
 #
-# Solution:
+#
+# --- Solution ---
+#
 # Having the previous part done properly, this part is a piece of cake.
 # We just need to introduce additional conditions in case of type ID equal
 # to 4 – for operator packets. Then perform one of 7 actions on the values

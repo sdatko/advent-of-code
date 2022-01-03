@@ -1,13 +1,16 @@
 #!/usr/bin/env python3
 #
-# Task:
+# --- Day 23: Amphipod / Part Two ---
+#
 # As you prepare to give the amphipods your solution, you notice that
 # the diagram they handed you was actually folded up. As you unfold it,
 # you discover an extra part of the diagram.
+#
 # Between the first and second lines of text that contain amphipod starting
 # positions, insert the following lines:
 #   #D#C#B#A#
 #   #D#B#A#C#
+#
 # So, the above example now becomes:
 #   #############
 #   #...........#
@@ -16,6 +19,7 @@
 #     #D#B#A#C#
 #     #A#D#C#A#
 #     #########
+#
 # The amphipods still want to be organized into rooms similar to before:
 #   #############
 #   #...........#
@@ -24,6 +28,7 @@
 #     #A#B#C#D#
 #     #A#B#C#D#
 #     #########
+#
 # In this updated example, the least energy required to organize these
 # amphipods is 44169:
 #   #############
@@ -217,10 +222,13 @@
 #     #A#B#C#D#
 #     #A#B#C#D#
 #     #########
+#
 # Using the initial configuration from the full diagram, what is the least
 # energy required to organize the amphipods?
 #
-# Solution:
+#
+# --- Solution ---
+#
 # Similar approach (solution by hand) worked here after a few trials. However,
 # I wanted to implement a general solution here, as the challenge is called
 # Advent of *Code*. So, the idea is to browse states-space, where the state

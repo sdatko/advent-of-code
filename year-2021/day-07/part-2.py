@@ -1,19 +1,39 @@
 #!/usr/bin/env python3
 #
-# Task:
+# --- Day 7: The Treachery of Whales / Part Two ---
+#
 # The crabs don't seem interested in your proposed solution.
 # Perhaps you misunderstand crab engineering?
+#
 # As it turns out, crab submarine engines don't burn fuel at a constant rate.
 # Instead, each change of 1 step in horizontal position costs 1 more unit
 # of fuel than the last: the first step costs 1, the second step costs 2,
 # the third step costs 3, and so on.
+#
 # As each crab moves, moving further becomes more expensive.
-# This changes the best horizontal position to align them all on.
+# This changes the best horizontal position to align them all on;
+# in the example above, this becomes 5:
+#   Move from 16 to 5: 66 fuel
+#   Move from 1 to 5: 10 fuel
+#   Move from 2 to 5: 6 fuel
+#   Move from 0 to 5: 15 fuel
+#   Move from 4 to 5: 1 fuel
+#   Move from 2 to 5: 6 fuel
+#   Move from 7 to 5: 3 fuel
+#   Move from 1 to 5: 10 fuel
+#   Move from 2 to 5: 6 fuel
+#   Move from 14 to 5: 45 fuel
+#
+# This costs a total of 168 fuel. This is the new cheapest possible outcome;
+# the old alignment position (2) now costs 206 fuel instead.
+#
 # Determine the horizontal position that the crabs can align to using the least
 # fuel possible so they can make you an escape route! How much fuel must they
 # spend to align to that position?
 #
-# Solution:
+#
+# --- Solution ---
+#
 # The straightforward solution works here well when we introduce here a formula
 # for calculating the total fuel consumption. The formula is a sum of series
 # from 1 to N, which can be expressed as N*(N+1)/2 – this is far more efficient
@@ -24,7 +44,9 @@
 # and I am not sure it will work for all cases, so I am leaving the original
 # approach that gave me the result.
 #
-# Appendix:
+#
+# --- Appendix ---
+#
 # The proof for average exists, although it is more complicated this time.
 # We start with function f(X) = \sum_{i=0}^N g( abs(S_i - X) ), here additional
 # g(n) = n * (n+1) / 2. Calculating the derivative, it gives us as follows:

@@ -1,11 +1,15 @@
 #!/usr/bin/env python3
 #
-# Task:
+# --- Day 24: Arithmetic Logic Unit / Part Two ---
+#
 # As the submarine starts booting up things like the Retro Encabulator,
 # you realize that maybe you don't need all these submarine features after all.
+#
 # What is the smallest model number accepted by MONAD?
 #
-# Solution:
+#
+# --- Solution ---
+#
 # The same way we can find an answer for part 2. The only necessary change
 # was to invert the argument of the loop with candidates – to range(9, 0, -1).
 # However, I was not satisfied with that, so I prepared more generalised
