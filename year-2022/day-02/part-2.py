@@ -38,13 +38,22 @@ INPUT_FILE = 'input.txt'
 
 def main():
     with open(INPUT_FILE, 'r') as file:
-        guide = [row.strip().split(' ')
-                 for row in file.read().strip().split('\n')]
+        shapes = ('rock', 'paper', 'scissors')
+        guide = [tuple(row.strip().split(' '))
+                 for row in file.read()
+                                .strip()
+                                .replace('A', shapes[0])
+                                .replace('B', shapes[1])
+                                .replace('C', shapes[2])
+                                .replace('X', 'lost')
+                                .replace('Y', 'draw')
+                                .replace('Z', 'won')
+                                .split('\n')]
 
     points_for_shape = {
-        'X': 1,
-        'Y': 2,
-        'Z': 3,
+        shapes[0]: 1,
+        shapes[1]: 2,
+        shapes[2]: 3,
     }
     points_for_outcome = {
         'lost': 0,
@@ -52,42 +61,19 @@ def main():
         'won': 6,
     }
 
-    shape_to_outcome = {
-        'X': 'lost',
-        'Y': 'draw',
-        'Z': 'won',
-    }
-
     score = 0
 
-    for opponents, ours in guide:
-        goal = shape_to_outcome[ours]
-
+    for opponents, goal in guide:
         if goal == 'draw':
-            if opponents == 'A':
-                pick = 'X'
-            if opponents == 'B':
-                pick = 'Y'
-            if opponents == 'C':
-                pick = 'Z'
+            ours = opponents
 
-        if goal == 'won':
-            if opponents == 'A':
-                pick = 'Y'
-            if opponents == 'B':
-                pick = 'Z'
-            if opponents == 'C':
-                pick = 'X'
+        elif goal == 'won':
+            ours = shapes[(shapes.index(opponents) + 1) % len(shapes)]
 
-        if goal == 'lost':
-            if opponents == 'A':
-                pick = 'Z'
-            if opponents == 'B':
-                pick = 'X'
-            if opponents == 'C':
-                pick = 'Y'
+        else:  # lost
+            ours = shapes[(shapes.index(opponents) - 1) % len(shapes)]
 
-        score += points_for_shape[pick]
+        score += points_for_shape[ours]
         score += points_for_outcome[goal]
 
     print(score)

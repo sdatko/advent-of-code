@@ -68,13 +68,22 @@ INPUT_FILE = 'input.txt'
 
 def main():
     with open(INPUT_FILE, 'r') as file:
+        shapes = ('rock', 'paper', 'scissors')
         guide = [tuple(row.strip().split(' '))
-                 for row in file.read().strip().split('\n')]
+                 for row in file.read()
+                                .strip()
+                                .replace('A', shapes[0])
+                                .replace('B', shapes[1])
+                                .replace('C', shapes[2])
+                                .replace('X', shapes[0])
+                                .replace('Y', shapes[1])
+                                .replace('Z', shapes[2])
+                                .split('\n')]
 
     points_for_shape = {
-        'X': 1,
-        'Y': 2,
-        'Z': 3,
+        shapes[0]: 1,
+        shapes[1]: 2,
+        shapes[2]: 3,
     }
     points_for_outcome = {
         'lost': 0,
@@ -85,20 +94,17 @@ def main():
     score = 0
 
     for opponents, ours in guide:
-        score += points_for_shape[ours]
+        if opponents == ours:
+            outcome = 'draw'
 
-        if (opponents, ours) in (('A', 'X'),
-                                 ('B', 'Y'),
-                                 ('C', 'Z')):
-            score += points_for_outcome['draw']
-
-        elif (opponents, ours) in (('A', 'Y'),
-                                   ('B', 'Z'),
-                                   ('C', 'X')):
-            score += points_for_outcome['won']
+        elif (shapes.index(opponents) + 1) % len(shapes) == shapes.index(ours):
+            outcome = 'won'
 
         else:
-            score += points_for_outcome['lost']
+            outcome = 'lost'
+
+        score += points_for_shape[ours]
+        score += points_for_outcome[outcome]
 
     print(score)
 
