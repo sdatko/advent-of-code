@@ -7,4 +7,4 @@ My solutions for Advent of Code challenges.
 
 List of challenges: https://adventofcode.com/events
 
-My additional challenge: no imports, just pure basic Python.
+My additional challenge: **no imports**, just pure basic Python.
