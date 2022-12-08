@@ -7,6 +7,9 @@ set -o pipefail
 # Expected outcomes
 #
 declare -A ANSWERS=(
+    [year-2018/day-01/part-1.py]=437
+    [year-2018/day-01/part-2.py]=655
+
     [year-2019/day-01/part-1.py]=3497399
     [year-2019/day-01/part-2.py]=5243207
 
