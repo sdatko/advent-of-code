@@ -109,7 +109,16 @@
 # on divisibility by a certain number (different for each monkey). Therefore
 # we can reduce the range for worry levels – the biggest value needed to be
 # considered is a multiplication of all individual divisors (formally called
-# the LCM – lowest common multiple).
+# the LCM – lowest common multiple). This is due to the following properties
+# of modulo operation:
+# – (a + b) % n == ((a % n) + (b % n)) % n,
+# – (a * b) % n == ((a % n) * (b % n)) % n,
+# – (a + k * n) % n = m  <==>  a % n = m  (a consequence of the two above).
+# In other words, we need to find a value that would not change the result
+# of the divisibility tests we perform: such as for  `a % m`  and  `a % n`,
+# from the last property above we can add a multiply  `m * n`  to value  `a`,
+# obtaining  `(a + m * n) % n`  and  `(a + m * n) % m`  and it will not change
+# the outcome as  `(m * n) % n == (n * m) % m == 0`.
 # So apart from lines 148-150 and 158, the rest of the code
 # is exactly the same as it was for part 1.
 #
