@@ -194,9 +194,9 @@
 # We start by reading the input file. The syntax and description of the task
 # made me think that this can be easily interpreted as lists in Python,
 # so I simply treat the input as Python code after stripping the whitespaces.
-# It would be safer to use json.load() call than eval(), but as I restricted
-# myself to not use any import, I stick with the latter (the alternative was
-# to write parsting, but well... the description is already complex enough).
+# It would be safer to use json.load() or ast.literal_eval() call rather than
+# the eval(), but I restricted myself to not use any import (the alternative
+# was to write parser, but well... the description is already complex enough).
 # Then I started implementing the explode() function, which checks for lists
 # and if we reach depth of 4 and there is another list, we replace that list
 # with 0 and we attempt to add that list elements to left and right neighbor.
@@ -409,8 +409,14 @@ def magnitude(number):
     return value
 
 
+def safe_eval(call):
+    globals_dict = {"__builtins__": None}
+    locals_dict = {}
+    return eval(call, globals_dict, locals_dict)
+
+
 def main():
-    numbers = [eval(number.strip()) for number in open(INPUT_FILE, 'r')]
+    numbers = [safe_eval(number.strip()) for number in open(INPUT_FILE, 'r')]
 
     number = numbers.pop(0)
     for next_number in numbers:

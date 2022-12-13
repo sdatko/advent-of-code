@@ -207,9 +207,15 @@ def is_in_right_order(left, right) -> bool | None:
                 return False
 
 
+def safe_eval(call):
+    globals_dict = {"__builtins__": None}
+    locals_dict = {}
+    return eval(call, globals_dict, locals_dict)
+
+
 def main():
     with open(INPUT_FILE, 'r') as file:
-        pairs = [[eval(packet) for packet in pair.split('\n')]
+        pairs = [[safe_eval(packet) for packet in pair.split('\n')]
                  for pair in file.read().strip().split('\n\n')]
 
     correct = 0

@@ -156,9 +156,15 @@ def cmp_to_key(mycmp):
     return K
 
 
+def safe_eval(call):
+    globals_dict = {"__builtins__": None}
+    locals_dict = {}
+    return eval(call, globals_dict, locals_dict)
+
+
 def main():
     with open(INPUT_FILE, 'r') as file:
-        packets = [eval(packet)
+        packets = [safe_eval(packet)
                    for packet in file.read()
                                      .replace('\n\n', '\n')
                                      .strip()

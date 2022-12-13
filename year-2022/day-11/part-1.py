@@ -284,6 +284,12 @@ INPUT_FILE = 'input.txt'
 ROUNDS = 20
 
 
+def safe_eval(call):
+    globals_dict = {"__builtins__": None}
+    locals_dict = {}
+    return eval(call, globals_dict, locals_dict)
+
+
 def main():
     with open(INPUT_FILE, 'r') as file:
         monkeys = dict()
@@ -298,8 +304,8 @@ def main():
 
         for definition in definitions:
             items = list(map(int, definition['Starting items'].split(', ')))
-            operation = eval('lambda old: '
-                             + definition['Operation'].replace('new = ', ''))
+            operation = safe_eval('lambda old: '
+                                  + definition['Operation'].split('=', 1)[1])
 
             monkeys[definition['ID']] = {
                 'items': items,
