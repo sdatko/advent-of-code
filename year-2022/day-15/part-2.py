@@ -61,6 +61,12 @@
 # its probable position (so we just move the inner verification loop).
 # This reduces the calculation time from around 5 minutes to about 1 minute.
 #
+# Edit: Extending the previous idea, I realized that if there are so many
+# candidates, calculating every time the distance in the inner loop is another
+# bottleneck. Hence calculating the sensors ranges only once on the beginning
+# does reduce the calculations time from about 1 minute to around 40 seconds
+# (after all, it turned out it was the only place where the beacons were used).
+#
 
 INPUT_FILE = 'input.txt'
 
@@ -78,28 +84,26 @@ def main():
                                    .replace(':', ',')
                                    .strip()
                                    .split('\n')]
+        sensors = [(x1, y1, abs(x1 - x2) + abs(y1 - y2))
+                   for x1, y1, x2, y2 in sensors]
 
     found = False
 
-    for sensor in sensors:
-        x1, y1, x2, y2 = sensor
-        max_distance = abs(x1 - x2) + abs(y1 - y2)
-        target_distance = max_distance + 1
+    for sx, sy, srange in sensors:
+        target_distance = srange + 1
 
         for dx in range(0, target_distance + 1):
             dy = target_distance - dx
 
-            for xc, yc in ((x1 + dx, y1 + dy),
-                           (x1 - dx, y1 + dy),
-                           (x1 + dx, y1 - dy),
-                           (x1 - dx, y1 - dy)):
+            for xc, yc in ((sx + dx, sy + dy),
+                           (sx - dx, sy + dy),
+                           (sx + dx, sy - dy),
+                           (sx - dx, sy - dy)):
                 if MIN <= xc <= MAX and MIN <= yc <= MAX:
-                    for sensor in sensors:
-                        nx1, ny1, nx2, ny2 = sensor
-                        max_distance = abs(nx1 - nx2) + abs(ny1 - ny2)
-                        candidate_distance = abs(nx1 - xc) + abs(ny1 - yc)
+                    for nx, ny, nrange in sensors:
+                        candidate_distance = abs(nx - xc) + abs(ny - yc)
 
-                        if candidate_distance <= max_distance:
+                        if candidate_distance <= nrange:
                             break  # this cannot be the right position
                     else:
                         found = True
