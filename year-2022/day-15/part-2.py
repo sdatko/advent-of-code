@@ -55,6 +55,12 @@
 # It is probably far from perfect, but it finds the solution in a finite time
 # (under 5 minutes, so far from perfect, but acceptable right now).
 #
+# Edit: I came up with an idea that the set of candidates is very large
+# and it is very ineffective to store it in memory for processing later.
+# Instead can verify the each of the candidates just after calculating
+# its probable position (so we just move the inner verification loop).
+# This reduces the calculation time from around 5 minutes to about 1 minute.
+#
 
 INPUT_FILE = 'input.txt'
 
@@ -73,7 +79,7 @@ def main():
                                    .strip()
                                    .split('\n')]
 
-    candidates = set()
+    found = False
 
     for sensor in sensors:
         x1, y1, x2, y2 = sensor
@@ -83,25 +89,25 @@ def main():
         for dx in range(0, target_distance + 1):
             dy = target_distance - dx
 
-            for nx, ny in ((x1 + dx, y1 + dy),
+            for xc, yc in ((x1 + dx, y1 + dy),
                            (x1 - dx, y1 + dy),
                            (x1 + dx, y1 - dy),
                            (x1 - dx, y1 - dy)):
-                if MIN <= nx <= MAX and MIN <= ny <= MAX:
-                    candidates.add((nx, ny))
+                if MIN <= xc <= MAX and MIN <= yc <= MAX:
+                    for sensor in sensors:
+                        nx1, ny1, nx2, ny2 = sensor
+                        max_distance = abs(nx1 - nx2) + abs(ny1 - ny2)
+                        candidate_distance = abs(nx1 - xc) + abs(ny1 - yc)
 
-    for candidate in candidates.copy():
-        xc, yc = candidate
-
-        for sensor in sensors:
-            x1, y1, x2, y2 = sensor
-            max_distance = abs(x1 - x2) + abs(y1 - y2)
-            candidate_distance = abs(x1 - xc) + abs(y1 - yc)
-
-            if candidate_distance <= max_distance:
-                break  # this cannot be the right position
-        else:
-            break  # we found it!
+                        if candidate_distance <= max_distance:
+                            break  # this cannot be the right position
+                    else:
+                        found = True
+                        break  # we found it!
+            if found:
+                break
+        if found:
+            break
 
     tuning_frequency = xc * MAX + yc
     print(tuning_frequency)
