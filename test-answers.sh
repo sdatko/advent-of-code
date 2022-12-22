@@ -164,6 +164,8 @@ declare -A ANSWERS=(
     [year-2022/day-20/part-2.py]=2897373276210
     [year-2022/day-21/part-1.py]=118565889858886
     [year-2022/day-21/part-2.py]=3032671800353
+    [year-2022/day-22/part-1.py]=73346
+    [year-2022/day-22/part-2.py]=106392
 )
 
 
