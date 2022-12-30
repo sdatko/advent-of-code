@@ -12,6 +12,8 @@ declare -A ANSWERS=(
 
     [year-2016/day-01/part-1.py]=278
     [year-2016/day-01/part-2.py]=161
+    [year-2016/day-02/part-1.py]=53255
+    [year-2016/day-02/part-2.py]=7423A
 
     [year-2017/day-01/part-1.py]=1102
     [year-2017/day-01/part-2.py]=1076
