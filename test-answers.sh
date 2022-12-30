@@ -9,6 +9,8 @@ set -o pipefail
 declare -A ANSWERS=(
     [year-2015/day-01/part-1.py]=138
     [year-2015/day-01/part-2.py]=1771
+    [year-2015/day-02/part-1.py]=1588178
+    [year-2015/day-02/part-2.py]=3783758
 
     [year-2016/day-01/part-1.py]=278
     [year-2016/day-01/part-2.py]=161
