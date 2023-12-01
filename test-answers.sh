@@ -188,6 +188,9 @@ declare -A ANSWERS=(
     [year-2022/day-24/part-2.py]=976
     [year-2022/day-25/part-1.py]='20===-20-020=0001-02'
     [year-2022/day-25/part-2.py]=0
+
+    [year-2023/day-01/part-1.py]=56506
+    [year-2023/day-01/part-2.py]=56017
 )
 
 
