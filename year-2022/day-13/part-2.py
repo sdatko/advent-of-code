@@ -69,7 +69,7 @@ DIVIDER_2 = [[6]]
 
 
 def is_in_right_order(left, right) -> bool | None:
-    if type(left) == int and type(right) == int:
+    if type(left) is int and type(right) is int:
         if left < right:
             return True
         elif left > right:
@@ -78,9 +78,9 @@ def is_in_right_order(left, right) -> bool | None:
             return None
 
     else:
-        if type(left) == int:
+        if type(left) is int:
             left = [left]
-        if type(right) == int:
+        if type(right) is int:
             right = [right]
 
         # Prevent modifications of original lists in the loop
