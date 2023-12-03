@@ -193,6 +193,8 @@ declare -A ANSWERS=(
     [year-2023/day-01/part-2.py]=56017
     [year-2023/day-02/part-1.py]=2085
     [year-2023/day-02/part-2.py]=79315
+    [year-2023/day-03/part-1.py]=546312
+    [year-2023/day-03/part-2.py]=87449461
 )
 
 
