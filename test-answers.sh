@@ -142,6 +142,19 @@ done
 
 
 #
+# Report mismatched answers
+#
+for FILE in year-*/day-*/part-*.py; do
+    unset -v "ANSWERS[${FILE}]"
+done
+
+for FILE in "${!ANSWERS[@]}"; do
+    echo "${RED}${0}: ERROR missing file ${FILE}${RESET}"
+    (( ERRORS += 1 ))
+done
+
+
+#
 # Set the exit status
 #
 echo ':: Summary'
