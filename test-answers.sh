@@ -8,6 +8,7 @@ set -o pipefail
 #
 RED="$(tput -T xterm setaf 1 || true)"
 GREEN="$(tput -T xterm setaf 2 || true)"
+YELLOW="$(tput -T xterm setaf 3 || true)"
 RESET="$(tput -T xterm sgr0 || true)"
 
 YEAR='*'
@@ -98,11 +99,13 @@ for FILE in "${FILES[@]}"; do
     DIRECTORY=$(dirname "${FILE}")
     MODULE=$(basename "${FILE%.*}")
 
-    if [ ! "${ANSWERS["${FILE}"]+exists}" ]; then
+    if [ ! "${ANSWERS[${FILE}]+exists}" ]; then
         echo "${RED}${FILE}: ERROR no expected value defined${RESET}"
-        : $(( ERRORS++ ))
+        (( ERRORS += 1 ))
         continue
     fi
+
+    TIME_START=$(date +%s%3N)
 
     if ! ACTUAL=$(
         pushd "${DIRECTORY}" > /dev/null
@@ -110,19 +113,30 @@ for FILE in "${FILES[@]}"; do
         popd > /dev/null
     ); then
         echo "${RED}${FILE}: ERROR running the script${RESET}"
-        : $(( ERRORS++ ))
+        (( ERRORS += 1 ))
         continue
     fi
 
-    EXPECTED="${ANSWERS["${FILE}"]}"
+    TIME_END=$(date +%s%3N)
+    DURATION=$(bc <<< "${TIME_END} - ${TIME_START}")
+
+    if [ "${DURATION}" -gt 2000 ]; then
+        DURATION="${RED}(${DURATION} ms)${RESET}"
+    elif [ "${DURATION}" -gt 1000 ]; then
+        DURATION="${YELLOW}(${DURATION} ms)${RESET}"
+    else
+        DURATION="${GREEN}(${DURATION} ms)${RESET}"
+    fi
+
+    EXPECTED="${ANSWERS[${FILE}]}"
     if [ "${ACTUAL}" != "${EXPECTED}" ]; then
         EXPECTED="${EXPECTED//$'\n'/\\n}"
         ACTUAL="${ACTUAL//$'\n'/\\n}"
         echo "${RED}${FILE}: ERROR expected ${EXPECTED}, got ${ACTUAL}${RESET}"
-        : $(( ERRORS++ ))
+        (( ERRORS += 1 ))
         continue
     else
-        echo "${GREEN}${FILE}: OK${RESET}"
+        echo "${GREEN}${FILE}: OK ${DURATION}${RESET}"
     fi
 done
 
