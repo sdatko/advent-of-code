@@ -101,7 +101,7 @@ for FILE in "${FILES[@]}"; do
 
     if [ ! "${ANSWERS[${FILE}]+exists}" ]; then
         echo "${RED}${FILE}: ERROR no expected value defined${RESET}"
-        (( ERRORS += 1 ))
+        _=$(( ERRORS += 1 ))
         continue
     fi
 
@@ -113,7 +113,7 @@ for FILE in "${FILES[@]}"; do
         popd > /dev/null
     ); then
         echo "${RED}${FILE}: ERROR running the script${RESET}"
-        (( ERRORS += 1 ))
+        _=$(( ERRORS += 1 ))
         continue
     fi
 
@@ -133,7 +133,7 @@ for FILE in "${FILES[@]}"; do
         EXPECTED="${EXPECTED//$'\n'/\\n}"
         ACTUAL="${ACTUAL//$'\n'/\\n}"
         echo "${RED}${FILE}: ERROR expected ${EXPECTED}, got ${ACTUAL}${RESET}"
-        (( ERRORS += 1 ))
+        _=$(( ERRORS += 1 ))
         continue
     else
         echo "${GREEN}${FILE}: OK ${DURATION}${RESET}"
@@ -150,7 +150,7 @@ done
 
 for FILE in "${!ANSWERS[@]}"; do
     echo "${RED}${0}: ERROR missing file ${FILE}${RESET}"
-    (( ERRORS += 1 ))
+    _=$(( ERRORS += 1 ))
 done
 
 
