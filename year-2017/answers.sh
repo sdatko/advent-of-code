@@ -9,3 +9,5 @@ ANSWERS[year-2017/day-03/part-1.py]=326
 ANSWERS[year-2017/day-03/part-2.py]=363010
 ANSWERS[year-2017/day-04/part-1.py]=466
 ANSWERS[year-2017/day-04/part-2.py]=251
+ANSWERS[year-2017/day-05/part-1.py]=373543
+ANSWERS[year-2017/day-05/part-2.py]=27502966
