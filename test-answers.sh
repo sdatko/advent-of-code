@@ -14,6 +14,7 @@ RESET="$(tput -T xterm sgr0 || true)"
 YEAR='*'
 DAY='*'
 PART='*'
+COMMAND=''
 
 ERRORS=0
 
@@ -27,7 +28,7 @@ function erro {
 
 function usage {
     echo
-    echo "Usage: ${0} [-h] [-y <YEAR>] [-d <DAY>] [-p <PART>]"
+    echo "Usage: ${0} [-h] [-y <YEAR>] [-d <DAY>] [-p <PART>] [-c <COMMAND>]"
     echo
 }
 
@@ -45,7 +46,7 @@ trap cleanup EXIT
 #
 # Parameters
 #
-while getopts ":y:d:p:h" opt; do
+while getopts ":y:d:p:c:h" opt; do
     case "${opt}" in
         h)
             usage
@@ -60,18 +61,36 @@ while getopts ":y:d:p:h" opt; do
         p)
             PART=${OPTARG}
             ;;
+        c)
+            COMMAND=${OPTARG}
+            ;;
         \?)
             usage
             erro "${RED}ERROR Invalid option: -${OPTARG}${RESET}"
-            exit 1
+            exit 2
             ;;
         :)
             usage
             erro "${RED}ERROR Option -${OPTARG} requires an argument.${RESET}"
-            exit 1
+            exit 2
             ;;
     esac
 done
+
+
+#
+# Interpreter selection
+#
+if [ -z "${COMMAND}" ]; then
+    if command -v python3 &> /dev/null; then
+        COMMAND='python3'
+    elif command -v pypy3 &> /dev/null; then
+        COMMAND='pypy3'
+    else
+        echo "${RED}ERROR Could not find Python 3 intepreter${RESET}"
+        exit 2
+    fi
+fi
 
 
 #
@@ -109,7 +128,7 @@ for FILE in "${FILES[@]}"; do
 
     if ! ACTUAL=$(
         pushd "${DIRECTORY}" > /dev/null
-        python3 -m "${MODULE}" 2>/dev/null
+        "${COMMAND}" -m "${MODULE}" 2>/dev/null
         popd > /dev/null
     ); then
         echo "${RED}${FILE}: ERROR running the script${RESET}"
