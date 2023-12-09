@@ -5,3 +5,5 @@ ANSWERS[year-2015/day-01/part-1.py]=138
 ANSWERS[year-2015/day-01/part-2.py]=1771
 ANSWERS[year-2015/day-02/part-1.py]=1588178
 ANSWERS[year-2015/day-02/part-2.py]=3783758
+ANSWERS[year-2015/day-03/part-1.py]=2592
+ANSWERS[year-2015/day-03/part-2.py]=2360
