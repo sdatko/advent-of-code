@@ -33,3 +33,5 @@ ANSWERS[year-2023/day-15/part-1.py]=521434
 ANSWERS[year-2023/day-15/part-2.py]=248279
 ANSWERS[year-2023/day-16/part-1.py]=7623
 ANSWERS[year-2023/day-16/part-2.py]=8244
+ANSWERS[year-2023/day-17/part-1.py]=1004
+ANSWERS[year-2023/day-17/part-2.py]=1171
