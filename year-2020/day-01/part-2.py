@@ -1,10 +1,21 @@
 #!/usr/bin/env python3
 #
-# Task:
-# In your expense report, what is the product
-# of the three entries that sum to 2020?
+# --- Day 1: Report Repair / Part Two ---
 #
-# Solution:
+# The Elves in accounting are thankful for your help; one of them even
+# offers you a starfish coin they had left over from a past vacation.
+# They offer you a second one if you can find three numbers in your
+# expense report that meet the same criteria.
+#
+# Using the above example again, the three entries that sum to 2020 are 979,
+# 366, and 675. Multiplying them together produces the answer, 241861950.
+#
+# In your expense report, what is the product of the three entries
+# that sum to 2020?
+#
+#
+# --- Solution ---
+#
 # Build a set of input numbers and the set of numbers that are complementary
 # to all possible pairs in the first set. If there is a number that satisfies
 # the equation A + B + C = 2020, we can find the number C in the complementary
