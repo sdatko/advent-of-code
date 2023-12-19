@@ -39,3 +39,5 @@ ANSWERS[year-2020/day-18/part-1.py]=25190263477788
 ANSWERS[year-2020/day-18/part-2.py]=297139939002972
 ANSWERS[year-2020/day-19/part-1.py]=120
 ANSWERS[year-2020/day-19/part-2.py]=350
+ANSWERS[year-2020/day-20/part-1.py]=18262194216271
+ANSWERS[year-2020/day-20/part-2.py]=2023
