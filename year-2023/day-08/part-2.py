@@ -80,14 +80,13 @@ GOAL = 'Z'
 
 
 def gcd(numbers: list[int]) -> int:
-    multipled = 1
+    highest_candidate = min(numbers)
 
-    for number in numbers:
-        multipled *= number
-
-    for divisor in range(2, multipled):
+    for divisor in range(2, highest_candidate + 1):
         if all([(number % divisor) == 0 for number in numbers]):
             return divisor
+
+    return 1  # not found – the numbers must be relatively prime
 
 
 def lcm(numbers: list[int]) -> int:
