@@ -3,11 +3,27 @@ Advent of Code
 
 ![](https://github.com/sdatko/advent-of-code/workflows/tests/badge.svg)
 
-My solutions for Advent of Code challenges.
+My solutions to Advent of Code challenges.
 
 List of challenges: https://adventofcode.com/events
 
 My additional challenge: **no imports**, just pure basic Python.
+
+
+Note on Fair Use
+----------------
+
+The described solutions and implementations in source codes are my own,
+shared under MIT License – free to copy, adjust, reuse, without any limits,
+restrictions or warranties.
+
+However, this repository also contains the original descriptions of the puzzles
+(kept as comments on top of solutions source codes) and example inputs gathered
+from the event website (https://adventofcode.com/). Those are kept here in this
+repository only for the puzzle completeness and educational purposes (to help
+understanding the problems and proposed solutions) and are sole property of
+[Eric Wastl](https://was.tl). The puzzles descriptions and inputs are
+not allowed to be reused in creation of any similar events or contests.
 
 
 Summary
