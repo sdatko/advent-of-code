@@ -3,9 +3,9 @@ Advent of Code
 
 ![](https://github.com/sdatko/advent-of-code/workflows/tests/badge.svg)
 
-My solutions to Advent of Code challenges.
+My solutions to Advent of Code puzzles.
 
-List of challenges: https://adventofcode.com/events
+List of puzzles: https://adventofcode.com/events
 
 My additional challenge: **no imports**, just pure basic Python.
 
