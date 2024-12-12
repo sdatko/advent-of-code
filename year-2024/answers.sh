@@ -23,3 +23,5 @@ ANSWERS[year-2024/day-10/part-1.py]=566
 ANSWERS[year-2024/day-10/part-2.py]=1324
 ANSWERS[year-2024/day-11/part-1.py]=194557
 ANSWERS[year-2024/day-11/part-2.py]=231532558973909
+ANSWERS[year-2024/day-12/part-1.py]=1375574
+ANSWERS[year-2024/day-12/part-2.py]=830566
