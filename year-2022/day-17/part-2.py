@@ -147,14 +147,6 @@ def main():
             cycles_todo = rocks_todo // cycle_length
             remainder = rocks_todo % cycle_length
 
-            # rock += cycles_todo * cycle_length
-            # offset = cycles_todo * height_difference
-
-            # rocks = [[i + offset, j] for i, j in rocks]
-            # heights = [height + offset for height in heights]
-
-            # CACHE.clear()  # We need to place the ramining rocks still
-
             break  # We have everything we need for a fast forward
 
         else:
