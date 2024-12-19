@@ -51,6 +51,8 @@
 #   line in the generated image (although depending on the input there exist
 #   a possibility for some horizontal lines to appear occasionally in output,
 #   the long line is very unlikely to appear except for the Easter Egg case).
+# – One other idea it to look for symmetry in all possible cases and picking
+#   the one where the highest vertical symmetry score is reached.
 #
 
 INPUT_FILE = 'input.txt'
